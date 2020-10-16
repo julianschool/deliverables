@@ -37,7 +37,8 @@ function inputVars() {
      with (processingInstance) {
         size(600, 600); 
         frameRate(60);
-
+    //Scale of graph
+    var sc = 25;
 var startBool = 0;
 function f(x){
     return a*sq(x)+vᵢ*x+hₒ;
@@ -78,9 +79,6 @@ draw = function() {
     var hₒ = ho;
     var vᵢ = -a*T-(hₒ/T);
     var vₜ = g*T+vᵢ;
-
-    //Scale of graph
-    var sc = 25;
     background(169);
     
     startBool %= 2;
