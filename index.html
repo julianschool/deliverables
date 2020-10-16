@@ -11,7 +11,14 @@
 </head>
  <body>
   <script id="asp-embed-script" data-zindex="1000000" type="text/javascript" charset="utf-8" src="https://spark.adobe.com/page-embed.js"></script><a class="asp-embed-link" href="https://spark.adobe.com/page/yZ2t3zVJiv0k4/" target="_blank"><img src="https://spark.adobe.com/page/yZ2t3zVJiv0k4/embed.jpg?buster=1602847802034" alt="Project: Launch" style="width:100%" border="0" /></a>
-    <p align="center"> 
+   
+  <label for="T">Air Time (T):</label>
+  <input type="number" id="T" name="quantity" min="1" max="10">
+  <label for="h">Initial Height (hₒ):</label>
+  <input type="number" id="h" name="quantity" min="0" max="50">
+  <button onclick="inputVars()">Submit</button>
+ 
+  <p align="center"> 
       <canvas id="mycanvas"></canvas> 
     </p>
  </body>
@@ -19,6 +26,13 @@
  <script src="https://cdn.jsdelivr.net/processing.js/1.4.8/processing.min.js"></script> 
  
  <script>
+  var T = 4;
+  var h = 0.4;
+function inputVars() {
+  var T = document.getElementById("T").value;
+  var h = document.getElementById("h").value;
+}
+  
     var sketchProc = function(processingInstance) {
      with (processingInstance) {
         size(600, 600); 
@@ -27,9 +41,9 @@
             var g = -9.80665;
             var a = g/2;
             //In seconds
-            var T = 6;
+            //var T = 6;
             //In meters
-            var hₒ = 0.44;
+            var hₒ = h;
             var vᵢ = -a*T-(hₒ/T);
             var vₜ = g*T+vᵢ;
 
