@@ -41,11 +41,11 @@ function inputVars() {
             var g = -9.80665;
             var a = g/2;
             //In seconds
-            //var T = 6;
+            var t = T;
             //In meters
             var hₒ = h;
-            var vᵢ = -a*T-(hₒ/T);
-            var vₜ = g*T+vᵢ;
+            var vᵢ = -a*t-(hₒ/t);
+            var vₜ = g*t+vᵢ;
 
             //Scale of graph
             var sc = 25;
@@ -86,7 +86,7 @@ function inputVars() {
                 startBool %= 2;
                     var aos = -vᵢ/g;
                     var mh = f(aos);
-                if(x < T-0.01 && startBool === 1){
+                if(x < t-0.01 && startBool === 1){
                     x+=1/60;
                 } 
                 stroke(0);
@@ -96,7 +96,7 @@ function inputVars() {
                     fill(255, 200);
                     rect(width-350, -10, 356, 112);
                     fill(0, 0, 0);
-                    text("T = " + T, width-10, 0);
+                    text("T = " + t, width-10, 0);
                     text("f(" + x.toFixed(3) + ") = " + f(x).toFixed(2) + " meters", width-10, 30);
                     text("v(" + x.toFixed(3) + ") = " + v(x).toFixed(5) + " m/s", width-10, 60);
                 if(x !== 0){
@@ -161,7 +161,7 @@ var mouseClicked = function(){
         x=0;
         startBool++;
     }
-    if(x > T-0.01){
+    if(x > t-0.01){
         x=0;
         startBool++;
     } 
