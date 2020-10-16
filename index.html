@@ -39,6 +39,11 @@ function inputVars() {
         frameRate(60);
     //Scale of graph
     var sc = 25;
+     //In meters per second
+    var g = -9.80665;
+    var a = g/2;
+    var vᵢ = -a*T-(hₒ/T);
+    var vₜ = g*T+vᵢ;
 var startBool = 0;
 function f(x){
     return a*sq(x)+vᵢ*x+hₒ;
@@ -70,15 +75,10 @@ function graphAtX(f, x){
 var x = 0;
 var resetBool = false;
 draw = function() {
-    //In meters per second
-    var g = -9.80665;
-    var a = g/2;
     //In seconds
     var T = tm;
     //In meters
     var hₒ = ho;
-    var vᵢ = -a*T-(hₒ/T);
-    var vₜ = g*T+vᵢ;
     background(169);
     
     startBool %= 2;
