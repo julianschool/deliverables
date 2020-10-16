@@ -26,31 +26,31 @@
  <script src="https://cdn.jsdelivr.net/processing.js/1.4.8/processing.min.js"></script> 
  
  <script>
-  var T = 4;
-  var h = 0.4;
+  var tm = 5;
+  var ho = 0.4;
 function inputVars() {
-  T = document.getElementById("T").value;
-  h = document.getElementById("h").value;
+  tm = document.getElementById("T").value;
+  ho = document.getElementById("h").value;
 }
   
     var sketchProc = function(processingInstance) {
      with (processingInstance) {
         size(600, 600); 
         frameRate(60);
+      
 //In meters per second
 var g = -9.80665;
 var a = g/2;
 //In seconds
-var T = 6;
+var T = tm;
 //In meters
-var hₒ = 0.44;
+var hₒ = ho;
 var vᵢ = -a*T-(hₒ/T);
 var vₜ = g*T+vᵢ;
 
 //Scale of graph
 var sc = 25;
 
-angleMode = "radians";
 var startBool = 0;
 function f(x){
     return a*sq(x)+vᵢ*x+hₒ;
@@ -82,6 +82,8 @@ function graphAtX(f, x){
 var x = 0;
 var resetBool = false;
 draw = function() {
+ T=tm;
+ hₒ=ho;
     background(169);
     
     startBool %= 2;
