@@ -24,136 +24,155 @@
      with (processingInstance) {
         size(600, 600); 
         frameRate(60);
-//In meters per second
-var g = -9.80665;
-var a = g/2;
-//In seconds
-var T = 6;
-//In meters
-var hₒ = 0.44;
-var vᵢ = -a*T-(hₒ/T);
-var vₜ = g*T+vᵢ;
+           //In meters per second
+           var g = -9.80665;
+           var a = g/2;
+           //In seconds
+           var T = 3.95;
+           //In meters
+           var hₒ = 0.44;
+           var vᵢ = -a*T-(hₒ/T);
+           //Scale of graph
+           var sc = 50;
+           var rocket = 0;
 
-//Scale of graph
-var sc = 25;
+           angleMode = "radians";
+           var startBool = 0;
+           function f(x){
+               return a*sq(x)+vᵢ*x+hₒ;
+           }
+           function v(x){
+               return g*x+vᵢ;
+           }
+           function t(x, z){
+               return v(z)*(x-z)+f(z);
+           }
+           function zoom(x, y, size){
+               translate(width/2, height/2);
+               scale(size);
+               translate(-width/2, -height/2);
+               translate(-x, y);
+           }
+           function graph(f){
+               var inc = 0.1;
+               for(var i = -100; i < 100; i+=inc){
+                   line(i*sc, f(i)*sc, (i+inc)*sc, f(i+inc)*sc);
+               }
+           }
+           function graphAtX(f, x){
+               var inc = 100;
+               for(var i = -100; i < 100; i+=inc){
+                   line(i*sc, f(i, x)*sc, (i+inc)*sc, f(i+inc, x)*sc);
+               }
+           }
+           var x = 0;
+           draw = function() {
+               background(169);
 
-angleMode = "radians";
-var startBool = 0;
-function f(x){
-    return a*sq(x)+vᵢ*x+hₒ;
-}
-function v(x){
-    return g*x+vᵢ;
-}
-function t(x, z){
-    return v(z)*(x-z)+f(z);
-}
-function zoom(x, y, size){
-    translate(width/2, height/2);
-    scale(size);
-    translate(-width/2, -height/2);
-    translate(-x, y);
-}
-function graph(f){
-    var inc = 0.1;
-    for(var i = -100; i < 100; i+=inc){
-        line(i*sc, f(i)*sc, (i+inc)*sc, f(i+inc)*sc);
-    }
-}
-function graphAtX(f, x){
-    var inc = 100;
-    for(var i = -100; i < 100; i+=inc){
-        line(i*sc, f(i, x)*sc, (i+inc)*sc, f(i+inc, x)*sc);
-    }
-}
-var x = 0;
-var resetBool = false;
-draw = function() {
-    background(169);
-    
-    startBool %= 2;
-        var aos = -vᵢ/g;
-        var mh = f(aos);
-    if(x < T-0.01 && startBool === 1){
-        x+=1/60;
-    } 
-    stroke(0);
-        textAlign(RIGHT, TOP);
-        textFont(createFont("Times new roman"), 30);
-        rectMode(CORNER);
-        fill(255, 200);
-        rect(width-350, -10, 356, 112);
-        fill(0, 0, 0);
-        text("T = " + T.toFixed(3), width-10, 0);
-        text("f(" + x.toFixed(3) + ") = " + f(x).toFixed(2) + " meters", width-10, 30);
-        text("v(" + x.toFixed(3) + ") = " + v(x).toFixed(5) + " m/s", width-10, 60);
-    if(x !== 0){
-       zoom(0, f(x)*sc/1.5, 1);
-    }
-    pushMatrix();
-        translate(0, height);
-        scale(1, -1);
-        stroke(0);
-            graphAtX(t, x);
-            graph(f);
-        stroke(0);
-        fill(0);
-        strokeWeight(2);
-        ellipse(x*sc, f(x)*sc, 10, 10);
-            rectMode(CENTER);
-            ellipse(aos*sc, mh*sc, 10, 10);
-    popMatrix(); 
-    pushMatrix();
-        translate(0, height);
-        scale(1, -1);
-        fill(0);
-        rect(width/2, 69/2, 10, 69);
-        fill(255, 182, 0);
-        noStroke();
-        rectMode(CENTER);
-        rect(width/2, 11/2, 60, 11, 5);
-        beginShape();
-            stroke(0, 0, 255);
-            noFill();
-            curveVertex(width/2+152, -45);
-            curveVertex(width/2+89, 48);
-            curveVertex(width/2+31, 4);
-            curveVertex(width/2+7, 83);
-        endShape();
-        noStroke();
-         fill(188, 50, 188);
-    if(mouseX >= width/2+114-50/2 && mouseX <= width/2+114+50/2 && mouseY >= height-51-33/2 && mouseY <= height-51-33/2+33){
-        fill(188-50, 50-50, 188-50);
-        }
-        rect(width/2+114, 51, 50, 33, 20);
-        translate(width/2, (f(x)*sc)+120/2);
-        if(v(x) > -7 && v(x) < 7){
-            rotate(map(v(x), 7, -7, 0, -PI));
-        } else if(v(x) < -7){
-            rotate(PI);
-        }
-        stroke(0);
-            fill(100, 230, 50);
-            rect(0, 0, 20, 70);
-            arc(0, 30, 20, 60, 0, PI);
-            fill(0, 128, 0);
-            triangle(-10, -35, -10, -10, -25, -35);
-            triangle(10, -35, 10, -10, 25, -35);
-            
-    popMatrix();
+               startBool %= 2;
+               rocket %= 2;
+               hₒ = 0.44;
+               vᵢ = -a*T-(hₒ/T);
+               if(rocket === 0){
+                   T = 3.950;
+               } else if(rocket === 1){
+                   T = 2.78;
+               }
+                   var aos = -vᵢ/g;
+                   var mh = f(aos);
+               if(x < T-0.01 && startBool === 1){
+                   x+=1/60;
+               } 
+               stroke(0);
+                   textAlign(RIGHT, TOP);
+                   textFont(createFont("Times new roman"), 30);
+                   rectMode(CORNER);
+                   fill(255, 200);
+                   rect(width-350, -10, 356, 112);
+                   if(mouseX >= width-190 && mouseX <= width-190+191 && mouseY >= 112-10 && mouseY <= 112-10+30){
+                       fill(230, 0);
+                   }
+                   rect(width-190, 112-10, 191, 30);
+                   fill(0, 0, 0);
+                   text("T = " + T.toFixed(3), width-10, 0);
+                   text("f(" + x.toFixed(3) + ") = " + f(x).toFixed(2) + " meters", width-10, 30);
+                   text("v(" + x.toFixed(3) + ") = " + v(x).toFixed(5) + " m/s", width-10, 60);
+                   textSize(27);
+                   text("Change Rocket", width-10, 100);
 
-};
+               if(x !== 0){
+                  zoom(0, f(x)*sc/1.5, 1);
+               }
+               pushMatrix();
+                   translate(0, height);
+                   scale(1, -1);
+                   stroke(0);
+                       graphAtX(t, x);
+                       graph(f);
+                   stroke(0);
+                   fill(0);
+                   strokeWeight(2);
+                   ellipse(x*sc, f(x)*sc, 10, 10);
+                       rectMode(CENTER);
+                       ellipse(aos*sc, mh*sc, 10, 10);
+               popMatrix(); 
+               pushMatrix();
+                   translate(0, height);
+                   scale(1, -1);
+                   fill(0);
+                   rect(width/2, 69/2, 10, 69);
+                   fill(255, 182, 0);
+                   noStroke();
+                   rectMode(CENTER);
+                   rect(width/2, 11/2, 60, 11, 5);
+                   beginShape();
+                       stroke(0, 0, 255);
+                       noFill();
+                       curveVertex(width/2+152, -45);
+                       curveVertex(width/2+89, 48);
+                       curveVertex(width/2+31, 4);
+                       curveVertex(width/2+7, 83);
+                   endShape();
+                   stroke(0);
+                    fill(188, 50, 188);
+               if(mouseX >= width/2+114-50/2 && mouseX <= width/2+114+50/2 && mouseY >= height-51-33/2 && mouseY <= height-51-33/2+33){
+                   fill(188-50, 50-50, 188-50);
+                   }
+                   rect(width/2+114, 51, 50, 33, 20);
+                   translate(width/2, (f(x)*sc)+120/2);
+                   if(v(x) > -7 && v(x) < 7){
+                       rotate(map(v(x), 7, -7, 0, -PI));
+                   } else if(v(x) < -7){
+                       rotate(PI);
+                   }
+                   fill(230);
+                   if(rocket === 1){
+                       fill(100, 230, 50);
+                   }
+                       rect(0, 0, 20, 70);
+                       arc(0, 30, 20, 60, 0, PI);
+                   fill(200);
+                   if(rocket === 1){
+                       fill(0, 128, 0);
+                   }
+                       triangle(-10, -35, -10, -10, -25, -35);
+                       triangle(10, -35, 10, -10, 25, -35);
+               popMatrix();
+           };
 
-var mouseClicked = function(){
-    if(mouseX >= width/2+114-50/2 && mouseX <= width/2+114+50/2 && mouseY >= height-51-33/2 && mouseY <= height-51-33/2+33 && f(x) <= hₒ){
-        x=0;
-        startBool++;
-    }
-    if(x > T-0.01){
-        x=0;
-        startBool++;
-    } 
-};
+           var mouseClicked = function(){
+               if(mouseX >= width/2+114-50/2 && mouseX <= width/2+114+50/2 && mouseY >= height-51-33/2 && mouseY <= height-51-33/2+33 && startBool === 0){
+                   x=0;
+                   startBool++;
+               }
+               if(x > T-0.01){
+                   x=0;
+                   startBool++;
+               } 
+               if(mouseX >= width-190 && mouseX <= width-190+191 && mouseY >= 112-10 && mouseY <= 112-10+30 && startBool === 0){
+                       rocket++;
+                   }
+           };
 
     }};
 
